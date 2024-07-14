@@ -6,39 +6,6 @@ if (!isLoggedIn()) {
     exit;
 }
 
-$maxBans = 5;
-$bansIssued = 0;
-$remainingBans = $maxBans;
-$bans = [];
-
-if ($user_role == "t-mod") {
-    // Prepare the SQL statement to count the number of bans
-    $stmt = $conn->prepare("SELECT COUNT(*) as ban_count FROM bans WHERE by_id = ?");
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $bansIssued = $row['ban_count'];
-        $remainingBans = $maxBans - $bansIssued;
-    }
-    $stmt->close();
-
-    // Fetch the bans if the number of bans is less than 5
-    if ($bansIssued < $maxBans) {
-        $stmt = $conn->prepare("SELECT * FROM bans WHERE by_id = ?");
-        $stmt->bind_param("i", $tmod_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        while ($row = $result->fetch_assoc()) {
-            $bans[] = $row;
-        }
-        $stmt->close();
-    }
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -68,37 +35,34 @@ if ($user_role == "t-mod") {
                             <h1 class="mt-4">Bans</h1>
                             <div class="card mb-4 rounded-0">
                                 <div class="card-body">
-                                    <?php if ($user_role == "t-mod"): ?>
-                                        <?php if ($bansIssued < $maxBans): ?>
-                                            <div class="res-message">
-                                                You have <?php echo $remainingBans; ?> out of <?php echo $maxBans; ?> bans
-                                                remaining.
-                                            </div>
-
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>User ID</th>
-                                                        <th>Reason</th>
-                                                        <th>Date</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php foreach ($bans as $ban): ?>
-                                                        <tr>
-                                                            <td><?php echo $ban['user_id']; ?></td>
-                                                            <td><?php echo $ban['reason']; ?></td>
-                                                            <td><?php echo $ban['date']; ?></td>
-                                                        </tr>
-                                                    <?php endforeach; ?>
-                                                </tbody>
-                                            </table>
-                                        <?php else: ?>
-                                            <div class="alert alert-warning rounded-0">
-                                                You have reached the maximum number of bans. An admin will review your bans.
-                                            </div>
-                                        <?php endif; ?>
-                                    <?php endif; ?>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>User ID</th>
+                                                <th>Reason</th>
+                                                <th>Lift Date</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $stmt = $conn->prepare("SELECT * FROM bans");
+                                            $stmt->execute();
+                                            $result = $stmt->get_result();
+                                            while ($ban = $result->fetch_assoc()) {
+                                                ?>
+                                                <tr>
+                                                    <td><?php echo $ban['user_id']; ?></td>
+                                                    <td><?php echo $ban['reason']; ?></td>
+                                                    <td><?php echo $ban['lift_date']; ?></td>
+                                                    <td><a href="unban?uid=<?php echo $ban['user_id']; ?>"
+                                                            class="btn btn-info">Unban</a></td>
+                                                </tr>
+                                                <?php
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>

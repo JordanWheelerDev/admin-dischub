@@ -15,9 +15,11 @@
                 <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
                     data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                        <a class="nav-link" href="awaiting-approval">Awaiting Approval</a>
-                        <a class="nav-link" href="bans">Bans</a>
-                        <a class="nav-link" href="reports">Reports</a>
+                        <a class="nav-link" href="awaiting-approval">Awaiting Approval <span
+                                class="badge text-bg-danger"
+                                style="margin-left: 4px;"><?php echo getNumberOfAwaitingApprovalServers() ?></span></a>
+                        <a class="nav-link" href="reports">Reports <span class="badge text-bg-danger"
+                                style="margin-left: 4px;"><?php echo getNumberOfReports() ?></span></a>
                     </nav>
                 </div>
                 <?php if ($user_id == 1) { ?>

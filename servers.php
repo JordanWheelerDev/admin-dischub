@@ -71,8 +71,8 @@ while ($row = $result->fetch_assoc()) {
                                                         <td><?php echo $server['tags']; ?></td>
 
                                                         <td>
-                                                            <a href="#" class="btn btn-primary btn-sm">Edit</a>
-                                                            <a href="#" class="btn btn-danger btn-sm">Ban</a>
+                                                            <a href="ban?uid=<?php echo $server['owner_id']; ?>"
+                                                                class="btn btn-danger btn-sm">Ban</a>
                                                         </td>
                                                     </tr>
                                                 <?php } ?>

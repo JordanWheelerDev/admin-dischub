@@ -6,14 +6,14 @@ if (!isLoggedIn()) {
     exit;
 }
 
-if (!isset($_GET['sid'])) {
+if (!isset($_GET['rid'])) {
     header('Location: reports');
     exit;
 }
 
-$serverId = $_GET['sid'];
-$stmt = $conn->prepare("SELECT * FROM reports WHERE server_id =?");
-$stmt->bind_param("i", $serverId);
+$rid = $_GET['rid'];
+$stmt = $conn->prepare("SELECT * FROM reports WHERE id =?");
+$stmt->bind_param("i", $rid);
 $stmt->execute();
 
 $result = $stmt->get_result();
@@ -21,6 +21,15 @@ $row = $result->fetch_assoc();
 
 $stmt->close();
 
+
+if (isset($_POST['markAsResolved'])) {
+    $resolved = 1;
+    $outcome = $_POST['outcome'];
+    $stmt = $conn->prepare("UPDATE reports SET resolved =?, outcome =?, resolved_by =? WHERE id =?");
+    $stmt->bind_param("issi", $resolved, $outcome, $user_name, $rid);
+    $stmt->execute();
+    header('Location: reports?outcome=resolved');
+}
 
 
 
@@ -36,7 +45,7 @@ $stmt->close();
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title><?php echo $row['name']; ?> Report | DiscHub Admin</title>
+    <title><?php echo $row['server_name']; ?> Report | DiscHub Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="css/styles.css?v=<?php echo time(); ?>" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -51,12 +60,12 @@ $stmt->close();
                 <div class="container-fluid px-4">
                     <div class="row d-flex justify-content-center">
                         <div class="col-lg-8">
-                            <h1 class="mt-4 mb-3"><?php echo $row['name']; ?> (Report)</h1>
+                            <h1 class="mt-4 mb-3"><?php echo $row['server_name']; ?> (Report)</h1>
                             <div class="card mb-4 rounded-0">
                                 <div class="card-body">
                                     <div class="mb-3">
                                         <div class="fw-bold">Server Name</div>
-                                        <div><?php echo $row['name']; ?></div>
+                                        <div><?php echo $row['server_name']; ?></div>
                                     </div>
                                     <div class="mb-3">
                                         <div class="fw-bold">Report Reason</div>
@@ -67,6 +76,29 @@ $stmt->close();
                                         <div><?php echo $row['report_message']; ?></div>
                                     </div>
                                     <hr>
+                                    <?php if ($row['resolved'] == 0) { ?>
+                                        <form action="" method="post">
+                                            <div class="mb-3">
+                                                <label for="outcome" class="form-label">Enter your actions, the steps you
+                                                    took and the outcome of the report.</label>
+
+                                                <textarea class="form-control" id="outcome" name="outcome"
+                                                    rows="4"></textarea>
+                                            </div>
+                                            <button class="btn btn-primary" name="markAsResolved">Mark as Resolved</button>
+                                        </form>
+
+                                    <?php } else { ?>
+                                        <div class="alert alert-success" role="alert">
+                                            <div class="mb-2">
+                                                This report has been marked as
+                                                resolved by <?php echo $row['resolved_by']; ?>
+                                            </div>
+                                            <div>
+                                                <b>Outcome:</b> <?php echo $row['outcome']; ?>
+                                            </div>
+                                        </div>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>

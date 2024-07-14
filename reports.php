@@ -59,7 +59,7 @@ if (!isLoggedIn()) {
                                                         <td><?php echo $row['report_reason']; ?></td>
 
                                                         <td>
-                                                            <a href="view-report?sid=<?php echo $row['server_id']; ?>"
+                                                            <a href="view-report?rid=<?php echo $row['id']; ?>"
                                                                 class="btn btn-primary btn-sm">View</a>
                                                         </td>
                                                     </tr>

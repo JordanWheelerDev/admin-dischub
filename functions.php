@@ -93,3 +93,29 @@ if (isset($_SESSION['username'])) {
     $user_name = $row['username'];
     $user_role = $row['role'];
 }
+
+function getNumberOfReports()
+{
+    global $conn;
+    $resolved = 0;
+    $stmt = $conn->prepare("SELECT COUNT(*) as total_reports FROM reports WHERE resolved =?");
+    $stmt->bind_param("i", $resolved);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $stmt->close();
+    return $row['total_reports'];
+}
+
+function getNumberOfAwaitingApprovalServers()
+{
+    global $conn;
+    $approved = 0;
+    $stmt = $conn->prepare("SELECT COUNT(*) as total_servers FROM servers WHERE is_approved =?");
+    $stmt->bind_param("i", $approved);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $stmt->close();
+    return $row['total_servers'];
+}
