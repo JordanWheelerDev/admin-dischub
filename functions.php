@@ -14,7 +14,6 @@ function sanitize($data)
 function login()
 {
     global $conn;
-    session_start(); // Start the session at the beginning of the function
 
     // Ensure sanitize function is defined elsewhere in your codebase
     $username = sanitize($_POST['username']);
