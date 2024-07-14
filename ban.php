@@ -48,7 +48,7 @@ if (isset($_POST['banUser'])) {
     $stmtUpdateServers->execute();
 
     // Redirect to the bans page with a success message
-    header('Location: servers?ban=success');
+    header('Location: bans?success=ban');
     exit();
 }
 

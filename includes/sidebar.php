@@ -20,6 +20,8 @@
                                 style="margin-left: 4px;"><?php echo getNumberOfAwaitingApprovalServers() ?></span></a>
                         <a class="nav-link" href="reports">Reports <span class="badge text-bg-danger"
                                 style="margin-left: 4px;"><?php echo getNumberOfReports() ?></span></a>
+                        <a class="nav-link" href="users">Users</a>
+                        <a class="nav-link" href="bans">Bans</a>
                     </nav>
                 </div>
                 <?php if ($user_id == 1) { ?>

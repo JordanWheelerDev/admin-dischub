@@ -17,7 +17,7 @@ if (!isLoggedIn()) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Bans | DiscHub Admin</title>
+    <title>Users | DiscHub Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="css/styles.css?v=<?php echo time(); ?>" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -35,33 +35,33 @@ if (!isLoggedIn()) {
                             <h1 class="mt-4">Bans</h1>
                             <div class="card mb-4 rounded-0">
                                 <div class="card-body">
-                                    <?php if (isset($_GET['success']) && $_GET['success'] == 'unban') { ?>
-                                        <div class="res-message-success">User was unbanned successfully.</div>
-                                    <?php } elseif (isset($_GET['success']) && $_GET['success'] == 'ban') { ?>
-                                        <div class="res-message-success">User was banned successfully.</div>
-                                    <?php } ?>
                                     <table class="table">
                                         <thead>
                                             <tr>
                                                 <th>User ID</th>
-                                                <th>Reason</th>
-                                                <th>Lift Date</th>
+                                                <th>Friendly Name</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $stmt = $conn->prepare("SELECT * FROM bans");
+                                            $stmt = $conn->prepare("SELECT DISTINCT owner_id FROM servers");
                                             $stmt->execute();
                                             $result = $stmt->get_result();
-                                            while ($ban = $result->fetch_assoc()) {
+
+                                            while ($row = $result->fetch_assoc()) {
                                                 ?>
                                                 <tr>
-                                                    <td><?php echo $ban['user_id']; ?></td>
-                                                    <td><?php echo $ban['reason']; ?></td>
-                                                    <td><?php echo $ban['lift_date']; ?></td>
-                                                    <td><a href="unban?uid=<?php echo $ban['user_id']; ?>"
-                                                            class="btn btn-info">Unban</a></td>
+                                                    <td><?php echo $row['owner_id']; ?></td>
+                                                    <td>
+                                                        <?php
+                                                        $discinfo = getUserInfo($row['owner_id'], $dhb);
+
+                                                        echo $discinfo['username'];
+                                                        ?>
+                                                    </td>
+                                                    <td><a href="ban?uid=<?php echo $row['owner_id']; ?>"
+                                                            class="btn btn-info">Ban</a></td>
                                                 </tr>
                                                 <?php
                                             }
