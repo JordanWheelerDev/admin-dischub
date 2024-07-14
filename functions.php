@@ -133,12 +133,17 @@ function getUserInfo($userId, $botToken)
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
+    if ($response === false) {
+        error_log("cURL Error: " . curl_error($ch));
+    }
+
     curl_close($ch);
 
     if ($httpCode == 200) {
         return json_decode($response, true);
     } else {
-        // Handle errors here
+        // Log the error
+        error_log("Failed to fetch user info. HTTP Code: " . $httpCode . " Response: " . $response);
         return null;
     }
 }

@@ -57,8 +57,15 @@ if (!isLoggedIn()) {
                                                         <?php
                                                         $discinfo = getUserInfo($row['owner_id'], $dhb);
 
-                                                        echo $discinfo['username'];
+                                                        if ($discinfo && isset($discinfo['username'])) {
+                                                            echo $discinfo['username'];
+                                                        } else {
+                                                            echo "Failed to fetch username for owner_id: " . $row['owner_id'];
+                                                            // Optionally log this error as well
+                                                            error_log("Failed to fetch username for owner_id: " . $row['owner_id']);
+                                                        }
                                                         ?>
+
                                                     </td>
                                                     <td><a href="ban?uid=<?php echo $row['owner_id']; ?>"
                                                             class="btn btn-info">Ban</a></td>
