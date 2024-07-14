@@ -127,8 +127,11 @@ function getUserInfo($userId, $botToken)
 
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        "Authorization: Bot {$botToken}"
+        "Authorization: Bot {$botToken}",
+        "Content-Type: application/json"
     ]);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
