@@ -2,7 +2,7 @@
 include 'functions.php'; // Ensure this file includes database connection
 
 if (!isLoggedIn()) {
-    header('Location: login.php');
+    header('Location: login');
     exit;
 }
 
