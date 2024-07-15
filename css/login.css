@@ -1,0 +1,58 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background: radial-gradient(
+        farthest-side at -33.33% 50%,
+        #0000 52%,
+        #7522c8 54% 57%,
+        #0000 59%
+      )
+      0 calc(128px / 2),
+    radial-gradient(
+        farthest-side at 50% 133.33%,
+        #0000 52%,
+        #7522c8 54% 57%,
+        #0000 59%
+      )
+      calc(128px / 2) 0,
+    radial-gradient(
+      farthest-side at 133.33% 50%,
+      #0000 52%,
+      #7522c8 54% 57%,
+      #0000 59%
+    ),
+    radial-gradient(
+      farthest-side at 50% -33.33%,
+      #0000 52%,
+      #7522c8 54% 57%,
+      #0000 59%
+    ),
+    #8928ea !important;
+  background-size: calc(128px / 4.667) 128px, 128px calc(128px / 4.667) !important;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.login-cont {
+  width: 400px;
+  background: #fff;
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.dha-btn {
+  padding: 10px 20px;
+  background: #8928ea;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}

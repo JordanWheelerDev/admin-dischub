@@ -33,7 +33,7 @@ function login()
             // Set session variables
             $_SESSION['username'] = $row['username'];
             // Redirect to dashboard
-            header("Location: index.php");
+            header("Location: index");
             exit();
         } else {
             // Password does not match
